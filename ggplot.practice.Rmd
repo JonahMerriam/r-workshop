@@ -92,3 +92,8 @@ gg_np+ geom_line(show.legend = FALSE)+ theme_light()+ labs(x="Year",y="annual Vi
 ##facet_wrap() function splits the data up into separate graphs based on the variable you give it
 ```
 
+```{r GGsave}
+ggsave(here("figures", "np_graph.jpg"), dpi = 180, width = 8, height = 7)
+##To save/download a plot use ggsave and tell it where to go and what to call it
+```
+
