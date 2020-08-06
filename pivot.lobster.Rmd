@@ -8,3 +8,62 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+```{r Libraries}
+## attach libraries
+library(tidyverse)
+library(readxl)
+library(here)
+library(skimr) # install.packages('skimr')
+library(kableExtra) # install.packages('kableExtra')
+```
+
+```{r Reading in Data}
+lobsters <- read_xlsx(here("data/lobsters.xlsx"), skip=4)
+##The skip=_ will skip the first # of lines entered and can be checked for success by head()
+skimr::skim(lobsters) 
+##For non-numeric data skim works rather than summary bc gives you number of variables and any data that may be missing for those variables
+
+```
+
+```{r Grouping Single Variables}
+lobsters %>%
+  group_by(year) %>%
+  summarize(count_by_year = n())
+##Data is grouped by year in this case and then each data point is counted and binned by year because n=1 for each row
+##The group_by %>% summarize() is the standard form when using one variable to group 
+```
+
+```{r Grouping Multiple Varibles}
+lobsters %>%
+  group_by(site, year) %>%
+  summarize(count_by_siteyear =  n())
+##Order of the variables is important to how it will structure bc it will group in order so in this case site and then year
+
+lobsters %>%
+  group_by(site, year) %>%
+  summarize(count_by_siteyear =  n(),
+            mean_size_mm = mean(size_mm))
+##Additional info can be gained like the mean for each location each year by adding this kind of code to the summarize section
+
+lobsters %>%
+  group_by(site, year) %>%
+  summarize(count_by_siteyear =  n(), 
+            mean_size_mm = mean(size_mm,na.rm=TRUE), sd_size_mm = sd(size_mm, na.rm=TRUE))
+##The means that weren't calculated above bc of one value being N/A can be fixed by adding the na.rm=TRUE and standard deviation can be calculated in a similar manner to the mean 
+
+siteyear_summary <- lobsters %>%
+  group_by(site, year) %>%
+  summarize(count_by_siteyear =  n(), 
+            mean_size_mm = mean(size_mm, na.rm = TRUE), 
+            sd_size_mm = sd(size_mm, na.rm = TRUE))
+##Giving this code a variable assignment will allow further analyses and formatting and is the starting point for a lot of the data manipulation in R
+```
+
+```{r kable()}
+siteyear_summary %>%
+  kable()
+##makes nice table when code is run
+```
+
+There are `r nrow(lobsters)` total lobsters included in this report.
