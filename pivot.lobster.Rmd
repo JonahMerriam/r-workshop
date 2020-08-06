@@ -67,3 +67,17 @@ siteyear_summary %>%
 ```
 
 There are `r nrow(lobsters)` total lobsters included in this report.
+
+```{r mutate&select}
+lobsters %>%
+  mutate(size_m = size_mm / 1000)
+
+lobsters_detailed <- lobsters %>%
+  mutate(size_m = size_mm / 1000, 
+         millenia = 2000,
+         observer = "Allison Horst")
+
+lobsters_detailed %>%
+  select(date, site, size_m)
+```
+
