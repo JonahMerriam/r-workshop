@@ -30,7 +30,7 @@ inverts_long<-inverts_long %>% mutate(year=as.numeric(year))
 ```{r Spreading variables}
 inverts_wide<- inverts_long %>% pivot_wider(names_from = common_name, values_from=sp_count)
 
-##This code alllows for the all of the species that are originally found in one column to have their own column 
+##This code allows for the all of the species that are originally found in one column to have their own column 
 ```
 
 ```{r Cleaning Column Names}

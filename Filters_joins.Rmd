@@ -1,0 +1,57 @@
+---
+title: "filter_join.Rmd"
+author: "Jonah Merriam"
+date: "8/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r Libraries}
+library(tidyverse)
+library(readxl)
+library(here) 
+library(kableExtra)
+```
+
+```{r Data}
+fish<-read_csv(here("data","fish.csv"))
+kelp_abur<-read_excel(here("data","kelp.xlsx"), sheet="abur")
+
+```
+
+```{r Filtering}
+fish_garibaldi <- fish %>% filter(common_name == "garibaldi")
+
+##The == tells R to find only exact matches in the row of common_name and then these are used to form the new table based on the characters given
+
+fish_over50 <- fish %>% filter(total_count >= 50)
+
+##The exclusion can be based on numeric columns too if you give R instructions to exclude using equals and greater than or less to signs
+```
+
+```{r Or/And}
+fish_3sp <- fish %>% filter(common_name == "garibaldi" | common_name == "blacksmith" |  common_name == "black surfperch")
+
+##The vertical line notates an Or statement to R so any fish with this name in the common_name column will appear on this table
+
+aque_2018 <- fish %>% filter(year == 2018, site == "aque")
+
+##A comma or an & between the two specifications will read into R as an and statement which requires both criteria to be met to be included
+```
+
+```{r Partial Strings}
+fish_bl <- fish %>% filter(str_detect(common_name, pattern = "black"))
+
+##Fish with a common name containing the word black are put into this graph using the filter()+str_detect() functions combined 
+
+##We can also exclude observations that contain a set string pattern by adding the negate = TRUE argument within str_detect() 
+```
+
+
+
+
+
+
