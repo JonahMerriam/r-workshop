@@ -50,7 +50,29 @@ fish_bl <- fish %>% filter(str_detect(common_name, pattern = "black"))
 ##We can also exclude observations that contain a set string pattern by adding the negate = TRUE argument within str_detect() 
 ```
 
+```{r Joining}
+abur_kelp_fish <- kelp_abur %>% full_join(fish, by = c("year", "site")) 
 
+##Full join will keep all of the data and add the variables you tell it together while keeping the other variables in different rows and filling in N/A for any value left blank. This is the safest way to merge data frames because nothing is lost.
+
+kelp_fish_left <- kelp_abur %>% left_join(fish, by = c("year","site"))
+
+##Left join will only keep the observations in data frame b(fish) that match the observations for data frame a(abur) 
+
+kelp_fish_injoin <- kelp_abur %>% inner_join(fish, by = c("year", "site"))
+
+##Innerjoin only keeps the observations that are shared between both of the data frames 
+```
+
+```{r kable}
+kable(my_fish_join)
+
+##This will make a normal html table when knitted
+
+my_fish_join %>% kable() %>% kable_styling(bootstrap_options = "striped", full_width = FALSE)
+
+##This will make a nicer table
+```
 
 
 
