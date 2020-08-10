@@ -1,0 +1,72 @@
+---
+title: "Tidy.practice.Rmd"
+author: "Jonah Merriam"
+date: "8/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r Libraries}
+library(tidyverse)
+library(janitor)
+library(here)
+library(readxl)
+```
+
+```{r Wide to Long}
+inverts_long<- pivot_longer(data=inverts, cols= "2016":"2018", names_to = "year", values_to = "sp_count")
+##The swap from wide to long needs to identify the columns that are being put together, in this case years, and take the names and values from those columns and place them in the desired format. This ex took the names of the rows and placed their values in a different column.
+
+##To check on whether the new columns are numeric or character use class(inverts_long$year)
+
+inverts_long<-inverts_long %>% mutate(year=as.numeric(year))
+
+##To change the column from characters to numeric use the above mutate function and check with class()
+```
+
+```{r Spreading variables}
+inverts_wide<- inverts_long %>% pivot_wider(names_from = common_name, values_from=sp_count)
+
+##This code alllows for the all of the species that are originally found in one column to have their own column 
+```
+
+```{r Cleaning Column Names}
+
+inverts_wide <- inverts_wide %>% clean_names()
+
+##Puts column names into the defult snake case
+```
+
+```{r Unite Columns}
+
+## tidyr::unite() function allows for multiple columns to be condensed down into one
+
+inverts_unite <- inverts_long %>% 
+  unite(col = "site_year", # What to name the new united column
+               c(site, year), # The columns we'll unite (site, year)
+               sep = "_") # How to separate the things we're uniting
+
+inverts_triple_unite ##This is the code used when three columns need to be combined 
+```
+
+```{r Separate Columns}
+inverts_sep<-inverts_unite %>% tidyr::separate(site_year, into = c("my_site","my_year"))
+```
+
+```{r Renaming in doc}
+##To change a misspelled word or abbreviate something the function stringr::str_replace can be used to change a specific set of characters to something else for the entire document
+
+ca_abbr <- inverts %>% 
+  mutate(
+    common_name = 
+      str_replace(common_name, 
+              pattern = "california", 
+              replacement = "CA")
+  )
+
+##This can be tricky if there is any overlap between words because all of them will be changed so it is important to be specific
+```
+
