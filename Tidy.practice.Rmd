@@ -37,7 +37,7 @@ inverts_wide<- inverts_long %>% pivot_wider(names_from = common_name, values_fro
 
 inverts_wide <- inverts_wide %>% clean_names()
 
-##Puts column names into the defult snake case
+##Puts column names into the default snake case
 ```
 
 ```{r Unite Columns}

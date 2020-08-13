@@ -82,7 +82,7 @@ ggplot(data = ci_np, aes(x = year, y = visitors)) + geom_point(aes(size=visitors
 ```
 
 ```{r ggplot w/ multiple series}
-##If the data needs to be broken into different groups like different national parks in this case then the group= in the aes() function will separate out the different groups in that collumn 
+##If the data needs to be broken into different groups like different national parks in this case then the group= in the aes() function will separate out the different groups in that column 
 ggplot(data = ca_np, aes(x = year, y = visitors, group = park_name)) + geom_line()
 
 ```
